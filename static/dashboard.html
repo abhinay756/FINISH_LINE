@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINISH-LINE - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <h1>FINISH-LINE Dashboard</h1>
+        <nav class="nav">
+            <a href="#">Profile</a>
+            <a href="login.html">Logout</a>
+        </nav>
+    </header>
+    <div class="main">
+        <aside class="sidebar">
+            <h3>Quick Actions</h3>
+            <ul>
+                <li><a href="#"> Create New Project</a></li>
+                <li><a href="#"> My Tasks</a></li>
+                <li><a href="#"> Team Chat</a></li>
+                <li><a href="#"> Analytics</a></li>
+                <li><a href="#"> Settings</a></li>
+            </ul>
+        </aside>
+        <main class="content">
+            <div class="cards">
+                <div class="card">
+                    <h3>Active Projects</h3>
+                    <div class="metric">3</div>
+                    <p>Projects in progress</p>
+                </div>
+                <div class="card">
+                    <h3>Pending Tasks</h3>
+                    <div class="metric">2</div>
+                    <p>Tasks awaiting action</p>
+                </div>
+                <div class="card">
+                    <h3>Total Earnings</h3>
+                    <div class="metric">1000</div>
+                    <p>Completed projects</p>
+                </div>
+                <div class="card">
+                    <h3>Average Rating</h3>
+                    <div class="metric">4.8</div>
+                    <p>Client satisfaction</p>
+                </div>
+            </div>
+            <div class="projects">
+                <h3>Recent Projects</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Deadline</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>E-commerce Redesign</td>
+                            <td>Frontend Developer</td>
+                            <td><span class="status in-progress">In Progress</span></td>
+                            <td>Mar 25, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile App UI Design</td>
+                            <td>UI/UX Designer</td>
+                            <td><span class="status completed">Completed</span></td>
+                            <td>Mar 10, 2026</td>
+                        </tr>
+                        <tr>
+                            <td>Backend API</td>
+                            <td>Backend Developer</td>
+                            <td><span class="status pending">Pending Review</span></td>
+                            <td>Mar 20, 2026</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

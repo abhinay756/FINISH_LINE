@@ -1,0 +1,15 @@
+{
+  "development": {
+    "SECRET_KEY": "your-super-secret-flask-key-2026-finishline",
+    "SQLALCHEMY_DATABASE_URI": "postgresql://finishline_user:yourpassword@localhost:5432/finishline_db",
+    "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+    "JWT_SECRET": "finishline-jwt-secret-2026-abhinay",
+    "STRIPE_SECRET_KEY": "sk_test_your_stripe_key_here",
+    "SENDGRID_API_KEY": "SG.your_sendgrid_key_here"
+  },
+  "production": {
+    "SECRET_KEY": "prod-secret-key-change-this",
+    "SQLALCHEMY_DATABASE_URI": "postgresql://prod_user:prod_pass@aws-rds-endpoint/finishline_db",
+    "JWT_SECRET": "prod-jwt-secret-change-this"
+  }
+}

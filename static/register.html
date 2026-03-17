@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINISH-LINE - Register</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="auth-container">
+    <div class="auth-box">
+        <div class="logo">
+            <h1>FINISH-LINE</h1>
+            <p>Join the collaborative platform</p>
+        </div>
+        <form>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="Create password (8+ chars)" required>
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <select required>
+                    <option value="">Select your role</option>
+                    <option value="owner">Project Owner/Manager</option>
+                    <option value="member">Team Member/Freelancer</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-primary">Create Account</button>
+        </form>
+        <div class="switch-link">
+            Already have an account? <a href="login.html">Login here</a>
+        </div>
+    </div>
+</body>
+
+</html>
