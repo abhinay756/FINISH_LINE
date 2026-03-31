@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINISH-LINE | Collaborative Project Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #059669;
+            --warning: #d97706;
+            --dark: #0f172a;
+            --bg-light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: #334155;
+        }
+
+        .navbar { background-color: var(--dark); }
+        
+        /* Dashboard Cards */
+        .glass-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .task-item {
+            border-left: 5px solid #cbd5e1;
+            margin-bottom: 12px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-item.completed {
+            border-left-color: var(--success);
+            background-color: #f0fdf4;
+        }
+
+        /* Escrow Section */
+        .escrow-panel {
+            background: linear-gradient(135deg, var(--dark) 0%, #1e293b 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 25px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .progress {
+            height: 12px;
+            border-radius: 10px;
+            background-color: #334155;
+        }
+
+        .btn-release {
+            background-color: var(--primary);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-release:disabled {
+            background-color: #475569;
+            opacity: 0.6;
+        }
+
+        .badge-status { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark mb-5">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">🏁 FINISH-LINE</a>
+        <span class="navbar-text text-light small">Escrow-Protected Collaboration</span>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <section id="setup-section" class="mb-5">
+                <h3 class="fw-bold mb-4">Step 1: Define Your Project</h3>
+                <div class="glass-card p-4">
+                    <label class="form-label fw-semibold">Project Title</label>
+                    <input type="text" id="project-title" class="form-control mb-3" placeholder="e.g. Mobile App MVP">
+                    
+                    <label class="form-label fw-semibold">Task Breakdown (4-6 Tasks Required)</label>
+                    <div id="task-input-container">
+                        <input type="text" class="form-control mb-2 task-input" placeholder="Task 1 Description">
+                        <input type="text" class="form-control mb-2 task-input" placeholder="Task 2 Description">
+                        <input type="text" class="form-control mb-2 task-input" placeholder="Task 3 Description">
+                        <input type="text" class="form-control mb-2 task-input" placeholder="Task 4 Description">
+                    </div>
+                    <button class="btn btn-outline-secondary btn-sm mt-2" onclick="addTaskField()">+ Add Task</button>
+                    <hr>
+                    <button class="btn btn-primary w-100 py-2 fw-bold" onclick="launchProject()">Launch Project & Lock Escrow</button>
+                </div>
+            </section>
+
+            <section id="active-project" class="d-none">
+                <div class="d-flex justify-content-between align-items-end mb-3">
+                    <h3 id="display-title" class="fw-bold m-0">Project Name</h3>
+                    <span class="text-muted" id="task-count-text">0/4 Tasks Done</span>
+                </div>
+                <div id="live-task-list">
+                    </div>
+            </section>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="escrow-panel shadow-lg">
+                <h5 class="text-uppercase small fw-bold text-info mb-3">Escrow Security</h5>
+                <h2 class="fw-bold mb-1">$2,500.00</h2>
+                <p class="text-light opacity-75 small mb-4">Project Budget Locked</p>
+                
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between mb-2">
+                        <small>Completion Progress</small>
+                        <small id="progress-percent">0%</small>
+                    </div>
+                    <div class="progress">
+                        <div id="progress-bar" class="progress-bar bg-info" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning py-2 small border-0" style="background: rgba(217, 119, 6, 0.2); color: #fbbf24;">
+                    <strong>All-or-Nothing Rule:</strong> All team members must complete their tasks before funds are distributed.
+                </div>
+
+                <button id="release-btn" class="btn btn-release w-100 mt-2 text-white" disabled>
+                    Release Funds
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let tasks = [];
+    const minTasks = 4;
+    const maxTasks = 6;
+
+    function addTaskField() {
+        const container = document.getElementById('task-input-container');
+        if (container.children.length < maxTasks) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'form-control mb-2 task-input';
+            input.placeholder = `Task ${container.children.length + 1} Description`;
+            container.appendChild(input);
+        } else {
+            alert("Maximum 6 tasks allowed per project.");
+        }
+    }
+
+    function launchProject() {
+        const titleInput = document.getElementById('project-title').value;
+        const inputElements = document.querySelectorAll('.task-input');
+        const validTasks = Array.from(inputElements).map(i => i.value).filter(v => v.trim() !== "");
+
+        if (!titleInput) return alert("Please enter a project title.");
+        if (validTasks.length < minTasks) return alert(`Minimum ${minTasks} tasks required.`);
+
+        // Setup Project Data
+        tasks = validTasks.map((t, index) => ({
+            id: index,
+            name: t,
+            completed: false
+        }));
+
+        // Transition UI
+        document.getElementById('setup-section').classList.add('d-none');
+        document.getElementById('active-project').classList.remove('d-none');
+        document.getElementById('display-title').innerText = titleInput;
+        
+        renderTasks();
+    }
+
+    function toggleTask(id) {
+        tasks[id].completed = !tasks[id].completed;
+        renderTasks();
+        updateEscrow();
+    }
+
+    function renderTasks() {
+        const container = document.getElementById('live-task-list');
+        container.innerHTML = '';
+
+        tasks.forEach(task => {
+            const div = document.createElement('div');
+            div.className = `glass-card task-item ${task.completed ? 'completed' : ''}`;
+            div.innerHTML = `
+                <div>
+                    <h6 class="fw-bold mb-0">${task.name}</h6>
+                    <small class="text-muted">${task.completed ? 'Ready for Payment' : 'Worker: Assigned'}</small>
+                </div>
+                <button class="btn btn-sm ${task.completed ? 'btn-success' : 'btn-outline-primary'}" onclick="toggleTask(${task.id})">
+                    ${task.completed ? '✓ Approved' : 'Mark Done'}
+                </button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function updateEscrow() {
+        const completedCount = tasks.filter(t => t.completed).length;
+        const total = tasks.length;
+        const percent = Math.round((completedCount / total) * 100);
+
+        // Update Progress
+        document.getElementById('progress-bar').style.width = percent + '%';
+        document.getElementById('progress-percent').innerText = percent + '%';
+        document.getElementById('task-count-text').innerText = `${completedCount}/${total} Tasks Done`;
+
+        // Unlock Button Logic (The Core Concept)
+        const releaseBtn = document.getElementById('release-btn');
+        if (percent === 100) {
+            releaseBtn.disabled = false;
+            releaseBtn.classList.remove('btn-release');
+            releaseBtn.classList.add('btn-success');
+            releaseBtn.innerText = "Release Funds to Team";
+        } else {
+            releaseBtn.disabled = true;
+            releaseBtn.innerText = "Waiting for Completion";
+        }
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
